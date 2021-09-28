@@ -1,0 +1,29 @@
+version: "1.0"
+stages:
+  - "clone"
+  - "build"
+  - "metadata"
+
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "kostis-codefresh/traefik-rate-limit-demo"
+    revision: '${{CF_REVISION}}'
+    stage: "clone"
+
+  build:
+    title: "Building Docker image"
+    type: "build"
+    image_name: "kostiscodefresh/traefik-demo-app"
+    working_directory: "${{clone}}/simple-web-app"
+    tags:
+    - "latest"
+    - '${{CF_SHORT_REVISION}}'
+    dockerfile: "Dockerfile"
+    stage: "build"
+    registry: dockerhub
+
+
+
+
