@@ -2,7 +2,8 @@ version: "1.0"
 stages:
   - "clone"
   - "build"
-  - "metadata"
+  - "qa"
+  - "prod"  
 
 steps:
   clone:
@@ -23,7 +24,29 @@ steps:
     dockerfile: "Dockerfile"
     stage: "build"
     registry: dockerhub
-
+  start_deployment:
+    title: Deploy
+    stage: qa
+    image: codefresh/cf-deploy-kubernetes:master
+    working_directory: "${{clone}}"
+    commands:
+      - /cf-deploy-kubernetes ./manifests-qa/deployment.yml    
+      - /cf-deploy-kubernetes ./manifests-qa/service.yml 
+      - /cf-deploy-kubernetes ./manifests-qa/qa-rate-limit.yml 
+      - /cf-deploy-kubernetes ./manifests-qa/route.yml       
+    environment:
+      - KUBECONTEXT=aws-eu
+      - KUBERNETES_NAMESPACE=qa
+    env:
+      name: Traefik-QA
+      endpoints:
+      - name: Main
+        url: http://kostis-eu.sales-dev.codefresh.io/qa
+      type: kubernetes
+      change: '${{CF_COMMIT_MESSAGE}}'
+      filters:
+      - cluster: myawscluster
+        namespace: komodor-demo
 
 
 

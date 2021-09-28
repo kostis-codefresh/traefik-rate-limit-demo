@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: simple-service
+  name: qa-service
 spec:
   type: ClusterIP
   selector:
-    app: trivial-go-web-app
+    app: qa-app
   ports:
     - name: http
       protocol: TCP

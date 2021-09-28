@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-deployment
+  name: qa-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: trivial-go-web-app
+      app: qa-app
   template:
     metadata:
       labels:
-        app: trivial-go-web-app
+        app: qa-app
     spec:
       containers:
       - name: webserver-simple
-        image: docker.io/kostiscodefresh/simple-web-app:3d9b390
+        image: docker.io/kostiscodefresh/traefik-demo-app:main
         ports:
         - containerPort: 8080
