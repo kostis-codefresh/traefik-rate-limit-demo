@@ -25,7 +25,7 @@ steps:
     stage: "build"
     registry: dockerhub
   qa_deployment:
-    title: QA
+    title: Deploy QA
     stage: qa
     image: codefresh/cf-deploy-kubernetes:master
     working_directory: "${{clone}}"
@@ -47,8 +47,12 @@ steps:
       filters:
       - cluster: aws-eu
         namespace: qa
+  askForPermission:
+    type: pending-approval
+    title: Deploy to Production?   
+    stage: prod   
   prod_deployment:
-    title: Production
+    title: Deploy Prod
     stage: prod
     image: codefresh/cf-deploy-kubernetes:master
     working_directory: "${{clone}}"
