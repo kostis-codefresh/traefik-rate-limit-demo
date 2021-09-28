@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prod-route
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: PathPrefix(`/prod`)
+    kind: Rule
+    services:
+    - name: prod-service
+      port: 80
+    middlewares:
+      - name: prod-rate-limit  

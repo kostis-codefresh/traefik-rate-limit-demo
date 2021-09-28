@@ -24,8 +24,8 @@ steps:
     dockerfile: "Dockerfile"
     stage: "build"
     registry: dockerhub
-  start_deployment:
-    title: Deploy
+  qa_deployment:
+    title: QA
     stage: qa
     image: codefresh/cf-deploy-kubernetes:master
     working_directory: "${{clone}}"
@@ -45,8 +45,30 @@ steps:
       type: kubernetes
       change: '${{CF_COMMIT_MESSAGE}}'
       filters:
-      - cluster: myawscluster
-        namespace: komodor-demo
-
+      - cluster: aws-eu
+        namespace: qa
+  prod_deployment:
+    title: Production
+    stage: prod
+    image: codefresh/cf-deploy-kubernetes:master
+    working_directory: "${{clone}}"
+    commands:
+      - /cf-deploy-kubernetes ./manifests-prod/deployment.yml    
+      - /cf-deploy-kubernetes ./manifests-prod/service.yml 
+      - /cf-deploy-kubernetes ./manifests-prod/prod-rate-limit.yml 
+      - /cf-deploy-kubernetes ./manifests-prod/route.yml       
+    environment:
+      - KUBECONTEXT=aws-eu
+      - KUBERNETES_NAMESPACE=prod
+    env:
+      name: Traefik-Prod
+      endpoints:
+      - name: Main
+        url: http://kostis-eu.sales-dev.codefresh.io/prod
+      type: kubernetes
+      change: '${{CF_COMMIT_MESSAGE}}'
+      filters:
+      - cluster: aws-eu
+        namespace: prod
 
 

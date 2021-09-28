@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-app
+  template:
+    metadata:
+      labels:
+        app: prod-app
+    spec:
+      containers:
+      - name: webserver-simple
+        image: docker.io/kostiscodefresh/traefik-demo-app:main
+        ports:
+        - containerPort: 8080
