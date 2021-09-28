@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ratedingress
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: PathPrefix(`/rate`)
+    kind: Rule
+    services:
+    - name: simple-service
+      port: 80
+    middlewares:
+      - name: rate-limit-qa  
