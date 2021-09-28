@@ -7,12 +7,15 @@ It can save you from denial of service attacks or resource starvation problems.
 [Traefik](https://traefik.io/) is a proxy that supports rate limiting out of the box
 and can also work as a Kubernetes ingress.
 
-## How to build and run container
+## How to build and run the application container
 
 Run
 
- *  `docker build . -t my-app` to create a container image 
- *  `docker run -p 8080:8080 my-app` to run it
+```
+cd simple-web-app
+docker build . -t my-app
+docker run -p 8080:8080 my-app
+```
 
  then visit http://localhost:8080 in your browser
 
@@ -42,8 +45,10 @@ kubectl create ns prod
 
 Deploy using Codefresh or manually with
 
+```
 kubectl apply -f manifests-qa/* -n qa
 kubectl apply -f manifests-prod/* -n prod
+```
 
 ## Test rate limiting
 
