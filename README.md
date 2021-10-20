@@ -31,7 +31,7 @@ that you can use at [codefresh.yml](codefresh.yml)
 First install traefik in your cluster
 
 ```
-helm repo add hub https://helm.traefik.io/hub
+helm repo add traefik https://helm.traefik.io/traefik
 kubectl create ns traefik
 helm install --namespace=traefik traefik traefik/traefik
 ```
